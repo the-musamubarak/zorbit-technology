@@ -66,3 +66,5 @@ All page files should begin with a short comment reminding the editor of the Sig
 ## Style Decisions
 
 Service visuals act as subdued technical signal fields beneath Space Grotesk headlines and IBM Plex Mono metadata, rather than introducing a second poster-typography system. Burnt Orange `#E8571A` is reserved for action, proof, active nodes, and key emphasis; large orange fields are avoided unless they are deliberately controlled. Portfolio language should describe the clearer decisions, cleaner operations, and more usable systems created by each project.
+
+Dashboard imagery is treated as a curated evidence plate: raw product colours are desaturated and framed by a restrained charcoal-and-orange technical scaffold, while the actual dashboards remain legible as proof of work.

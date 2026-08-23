@@ -21,6 +21,8 @@
 - [x] Create three matching social-post banners for Data Visualization, Websites & Apps, and Software.
 - [x] Add the four-service banner showcase to the main website.
 - [x] Extract eligible dashboards from the supplied portfolio, excluding Spotify and Netflix, and add them to Zorbit’s showcase.
+- [x] Add an accessible hover reveal that shows the tools used on each dashboard card.
+- [x] Refine the dashboard screenshots into subdued Signal Foundry evidence plates.
 
 ## Source requirements
 
@@ -51,3 +53,5 @@ The four-banner website showcase has been refined into a subdued Signal Foundry 
 The supplied dashboard portfolio contains five eligible projects to showcase: Insurance Dashboard, NITDA Dashboard, UK Accident Dashboard, Supermarket Dashboard, and Fitness Dashboard. Spotify and Netflix are explicitly excluded.
 
 The five-dashboard data-evidence showcase has been validated on desktop and mobile. Preview images, labels, Power BI links, and card layouts are readable, and the independent style review confirms the new section remains cohesive with the Signal Foundry visual system.
+
+Dashboard cards now reveal the relevant tools on hover or keyboard focus. On touch devices, the same tool tags remain visible without requiring a hover gesture. The screenshot previews are presented as subdued evidence plates, preserving dashboard readability while aligning the gallery with the charcoal-and-orange Signal Foundry system.
