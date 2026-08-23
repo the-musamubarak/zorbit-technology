@@ -14,6 +14,9 @@
 - [x] Add a lightweight cookie and privacy notice banner at the bottom of the page.
 - [x] Create a clear reusable transparent Zorbit Technology logo for social posting and brand use.
 - [x] Replace the website mark with the clear Zorbit logo and add a branded capability banner.
+- [x] Create a standalone square Zorbit Technology PNG banner for social posting.
+- [x] Deliver the completed banner as a directly downloadable high-quality PNG.
+- [x] Add website and software-development capabilities plus the Writers Support Services and inventory-management projects to the portfolio.
 
 ## Source requirements
 
@@ -32,3 +35,5 @@ The build must avoid generic centered layouts, purple gradients, excessive round
 Desktop review confirms that the updated logo is visible in the header and footer, and the capability banner appears directly beneath the hero with the four service categories clearly labelled.
 
 Mobile review confirms that the updated mark and capability labels remain readable. The independent style review found the refreshed page consistent with the Signal Foundry direction and ready to ship.
+
+The expanded portfolio has been reviewed at desktop and mobile sizes. The Writers Support Services preview, live-site link, inventory and debt-tracking software entry, and expanded website/software capability copy remain clear and readable across both layouts.
