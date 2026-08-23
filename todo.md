@@ -11,6 +11,7 @@
 - [x] Verify the page at desktop and mobile sizes, then save a checkpoint.
 - [x] Add a refined motion-graphic treatment to the Zorbit Technology header wordmark.
 - [x] Add a branded Z-signal loading screen and apply the provided WhatsApp business URL.
+- [x] Add a lightweight cookie and privacy notice banner at the bottom of the page.
 
 ## Source requirements
 

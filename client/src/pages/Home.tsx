@@ -69,10 +69,14 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [statsActive, setStatsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showPrivacyNotice, setShowPrivacyNotice] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loaderTimer = window.setTimeout(() => setIsLoading(false), 1350);
     return () => window.clearTimeout(loaderTimer);
+  }, []);
+  useEffect(() => {
+    setShowPrivacyNotice(window.localStorage.getItem("zorbit-privacy-notice") !== "acknowledged");
   }, []);
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setStatsActive(true); }, { threshold: 0.35 });
@@ -80,6 +84,10 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
   const closeMenu = () => setMenuOpen(false);
+  const acknowledgePrivacyNotice = () => {
+    window.localStorage.setItem("zorbit-privacy-notice", "acknowledged");
+    setShowPrivacyNotice(false);
+  };
 
   return <div className="zorbit-page">
     <div className={isLoading ? "site-loader" : "site-loader site-loader-exit"} role="status" aria-live="polite" aria-label="Loading Zorbit Technology">
@@ -110,5 +118,6 @@ export default function Home() {
     </main>
 
     <footer className="footer section-shell"><a className="brand" href="#home"><span className="brand-mark">Z</span><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><div className="footer-meta"><span>© 2026 Zorbit Technology</span><span>CAC Registered · Abuja, Nigeria</span></div><div className="socials"><a href="mailto:hello@zorbittechnology.com" aria-label="Email"><Mail size={17} /></a><a href="#contact" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="#home" aria-label="X"><XIcon size={17} /></a></div></footer>
+    {showPrivacyNotice && <aside className="privacy-notice" aria-label="Cookie and privacy notice"><div className="privacy-signal"><span>PRIVACY</span><i /></div><p>We only store your acknowledgement in this browser. No non-essential cookies are used in this version of the site.</p><a href="mailto:hello@zorbittechnology.com?subject=Privacy%20enquiry">Privacy enquiry</a><button type="button" onClick={acknowledgePrivacyNotice}>Understood <Check size={15} /></button></aside>}
   </div>;
 }
