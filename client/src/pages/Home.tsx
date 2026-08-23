@@ -68,7 +68,12 @@ function NodeField() {
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [statsActive, setStatsActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const statsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const loaderTimer = window.setTimeout(() => setIsLoading(false), 1350);
+    return () => window.clearTimeout(loaderTimer);
+  }, []);
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setStatsActive(true); }, { threshold: 0.35 });
     if (statsRef.current) observer.observe(statsRef.current);
@@ -77,6 +82,15 @@ export default function Home() {
   const closeMenu = () => setMenuOpen(false);
 
   return <div className="zorbit-page">
+    <div className={isLoading ? "site-loader" : "site-loader site-loader-exit"} role="status" aria-live="polite" aria-label="Loading Zorbit Technology">
+      <div className="loader-grid" aria-hidden="true" />
+      <div className="loader-signal">
+        <div className="loader-ring loader-ring-one" /><div className="loader-ring loader-ring-two" />
+        <span className="loader-z">Z</span>
+      </div>
+      <div className="loader-copy"><b>ZORBIT</b><span>TECHNOLOGY / INITIALIZING</span></div>
+      <div className="loader-bar"><span /></div>
+    </div>
     <header className="site-header"><a className="brand" href="#home" onClick={closeMenu}><span className="brand-mark">Z</span><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><button className="menu-button" aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><nav className={menuOpen ? "nav open" : "nav"}><a href="#home" onClick={closeMenu}>Home</a><a href="#services" onClick={closeMenu}>Services</a><a href="#work" onClick={closeMenu}>Portfolio</a><a href="#about" onClick={closeMenu}>About</a><a href="#contact" className="nav-cta" onClick={closeMenu}>Contact <ArrowUpRight size={15} /></a></nav></header>
 
     <main>
@@ -92,7 +106,7 @@ export default function Home() {
 
       <section className="cert-section section-shell"><div><span className="section-index">05 / CREDENTIALS</span><h2>Always<br /><span>keep learning.</span></h2></div><div className="cert-list">{certifications.map((cert) => <div className="cert" key={cert}><Sparkles size={16} /><span>{cert}</span><Check size={16} /></div>)}</div></section>
 
-      <section className="contact-section section-shell" id="contact"><div className="contact-copy"><span className="section-index">06 / NEXT MOVE</span><h2>Ready to work<br /><em>with Zorbit?</em></h2><p>Bring us the messy part. We’ll make it usable.</p></div><div className="contact-panel"><div className="contact-line"><Mail size={19} /><a href="mailto:hello@zorbittechnology.com">hello@zorbittechnology.com</a></div><div className="contact-line"><span className="whatsapp-icon">WA</span><a href="https://wa.me/2340000000000" target="_blank" rel="noreferrer">Message us on WhatsApp</a></div><div className="contact-note">Tell us what you are trying to make clearer, faster, or more useful. We’ll take it from there.</div></div></section>
+      <section className="contact-section section-shell" id="contact"><div className="contact-copy"><span className="section-index">06 / NEXT MOVE</span><h2>Ready to work<br /><em>with Zorbit?</em></h2><p>Bring us the messy part. We’ll make it usable.</p></div><div className="contact-panel"><div className="contact-line"><Mail size={19} /><a href="mailto:hello@zorbittechnology.com">hello@zorbittechnology.com</a></div><div className="contact-line"><span className="whatsapp-icon">WA</span><a href="https://wa.me/message/46GKY26SZUWDL1" target="_blank" rel="noreferrer">Message us on WhatsApp</a></div><div className="contact-note">Tell us what you are trying to make clearer, faster, or more useful. We’ll take it from there.</div></div></section>
     </main>
 
     <footer className="footer section-shell"><a className="brand" href="#home"><span className="brand-mark">Z</span><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><div className="footer-meta"><span>© 2026 Zorbit Technology</span><span>CAC Registered · Abuja, Nigeria</span></div><div className="socials"><a href="mailto:hello@zorbittechnology.com" aria-label="Email"><Mail size={17} /></a><a href="#contact" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="#home" aria-label="X"><XIcon size={17} /></a></div></footer>

@@ -10,6 +10,7 @@
 - [x] Add accessible interactions, smooth scrolling, hover motion, and reduced-motion support.
 - [x] Verify the page at desktop and mobile sizes, then save a checkpoint.
 - [x] Add a refined motion-graphic treatment to the Zorbit Technology header wordmark.
+- [x] Add a branded Z-signal loading screen and apply the provided WhatsApp business URL.
 
 ## Source requirements
 
