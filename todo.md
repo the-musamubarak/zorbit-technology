@@ -9,6 +9,7 @@
 - [x] Build services, about, portfolio, certifications, CTA, and footer sections.
 - [x] Add accessible interactions, smooth scrolling, hover motion, and reduced-motion support.
 - [x] Verify the page at desktop and mobile sizes, then save a checkpoint.
+- [x] Add a refined motion-graphic treatment to the Zorbit Technology header wordmark.
 
 ## Source requirements
 
@@ -21,4 +22,3 @@ Use a premium editorial dark-tech direction: high-contrast charcoal surfaces, bu
 ## Style reminders
 
 The build must avoid generic centered layouts, purple gradients, excessive rounded cards, lorem ipsum, and fake testimonials or reviews. Use the requested content verbatim where supplied, and treat unspecified contact details as intentional placeholders only if necessary.
-
