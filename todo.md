@@ -20,6 +20,7 @@
 - [x] Revise the social banner with Zorbit wordmark colours, expanded service tags, and the orange website URL.
 - [x] Create three matching social-post banners for Data Visualization, Websites & Apps, and Software.
 - [x] Add the four-service banner showcase to the main website.
+- [x] Extract eligible dashboards from the supplied portfolio, excluding Spotify and Netflix, and add them to Zorbit’s showcase.
 
 ## Source requirements
 
@@ -46,3 +47,7 @@ The Data Visualization and Websites & Apps banners have been visually validated 
 The Software banner has also been validated at 1920 × 1920, completing the matched banner set.
 
 The four-banner website showcase has been refined into a subdued Signal Foundry technical grid and verified at desktop and mobile sizes. It remains readable, the supplied banner imagery is visually secondary to the website typography, and the closing CTA now uses controlled orange emphasis on a dark field.
+
+The supplied dashboard portfolio contains five eligible projects to showcase: Insurance Dashboard, NITDA Dashboard, UK Accident Dashboard, Supermarket Dashboard, and Fitness Dashboard. Spotify and Netflix are explicitly excluded.
+
+The five-dashboard data-evidence showcase has been validated on desktop and mobile. Preview images, labels, Power BI links, and card layouts are readable, and the independent style review confirms the new section remains cohesive with the Signal Foundry visual system.
