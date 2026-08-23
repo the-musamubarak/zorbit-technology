@@ -62,3 +62,7 @@ Burnt Orange `#E8571A` — the signal that marks movement, action, and proof.
 ## Implementation reminders
 
 All page files should begin with a short comment reminding the editor of the Signal Foundry direction. Avoid purple gradients, fake testimonials, generic lorem ipsum, excessive rounded cards, and fully centered compositions. The testimonials requirement is represented as a client-perspective invitation rather than fabricated endorsements until real quotes are supplied.
+
+## Style Decisions
+
+Service visuals act as subdued technical signal fields beneath Space Grotesk headlines and IBM Plex Mono metadata, rather than introducing a second poster-typography system. Burnt Orange `#E8571A` is reserved for action, proof, active nodes, and key emphasis; large orange fields are avoided unless they are deliberately controlled. Portfolio language should describe the clearer decisions, cleaner operations, and more usable systems created by each project.
