@@ -27,6 +27,7 @@
 - [x] Strengthen the remaining lower-page Signal Foundry structures and evidence-plate treatments.
 - [x] Expand the personal About profile and improve text alignment across the site.
 - [x] Audit and fix mobile text overlap, typography, and spacing issues.
+- [x] Fix the hero utility label overlapping the Work with us button on mobile.
 
 ## Source requirements
 
@@ -67,3 +68,5 @@ The expanded founder profile and professional details are clear at desktop and m
 Mobile audits at 375 px and 320 px show that the layout remains structurally intact, but very narrow screens benefit from left-aligned body copy, safer contact-link wrapping, compact section spacing, and stronger flex-wrap safeguards to prevent crowding as content grows.
 
 After the responsive adjustment, the page was rechecked at 320 px. Long copy, profile details, contact links, dashboard labels, and action controls wrap within their containers without horizontal overflow or text overlap.
+
+The reported hero overlap was traced to the decorative scroll cue, which was absolutely positioned into the mobile hero space. It is now intentionally hidden on mobile, while remaining available on larger screens; the affected call-to-action area is clear at the reported viewport width.

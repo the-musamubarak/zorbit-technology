@@ -83,6 +83,7 @@ h1,h2,h3,p { margin:0; } h1 { max-width:780px; font-size:clamp(54px,7.2vw,108px)
 @media (max-width:800px) {
   .zorbit-page { overflow-x:clip; }
   .hero { min-height:auto; padding-bottom:94px; }
+  .scroll-cue { display:none; }
   .hero-actions { flex-wrap:wrap; gap:10px; }
   .hero-lede,.section-heading > p,.dashboard-heading > p,.about-statement > p,.project p,.dashboard-copy p,.contact-copy p,.contact-note { text-align:left; text-align-last:left; hyphens:manual; overflow-wrap:break-word; }
   .section-heading,.dashboard-heading,.about-statement,.contact-copy,.contact-panel,.credential-card,.project > div { min-width:0; }
