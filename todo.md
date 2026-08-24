@@ -26,6 +26,7 @@
 - [x] Remove the previously added banner-image showcase sections from the website.
 - [x] Strengthen the remaining lower-page Signal Foundry structures and evidence-plate treatments.
 - [x] Expand the personal About profile and improve text alignment across the site.
+- [x] Audit and fix mobile text overlap, typography, and spacing issues.
 
 ## Source requirements
 
@@ -62,3 +63,7 @@ Dashboard cards now reveal the relevant tools on hover or keyboard focus. On tou
 After synchronizing to version 96f218d4 and removing the social-banner image grid, the streamlined site has been verified on desktop and mobile. Service content remains available through the capability cards; dashboard and portfolio evidence plates retain clear labels, links, and responsive layouts.
 
 The expanded founder profile and professional details are clear at desktop and mobile sizes. Supporting paragraphs use measured justification with left-aligned final lines, preserving readability while creating a more editorial text rhythm.
+
+Mobile audits at 375 px and 320 px show that the layout remains structurally intact, but very narrow screens benefit from left-aligned body copy, safer contact-link wrapping, compact section spacing, and stronger flex-wrap safeguards to prevent crowding as content grows.
+
+After the responsive adjustment, the page was rechecked at 320 px. Long copy, profile details, contact links, dashboard labels, and action controls wrap within their containers without horizontal overflow or text overlap.

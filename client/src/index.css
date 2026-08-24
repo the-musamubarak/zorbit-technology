@@ -78,5 +78,41 @@ h1,h2,h3,p { margin:0; } h1 { max-width:780px; font-size:clamp(54px,7.2vw,108px)
 .hero-lede,.section-heading > p,.dashboard-heading > p,.about-statement > p,.project p,.dashboard-copy p,.contact-copy p,.contact-note { text-align:justify; text-align-last:left; text-justify:inter-word; hyphens:auto; }
 .about-profile { margin-top:37px; padding:18px 0 19px 18px; border-left:2px solid var(--orange); border-bottom:1px solid var(--line); }.profile-role { color:var(--orange); font:10px 'IBM Plex Mono',monospace; letter-spacing:.13em; }.about-profile h3 { margin-top:12px; font-size:clamp(27px,3.3vw,42px); line-height:.94; letter-spacing:-.065em; font-weight:600; }.profile-specialism { margin-top:12px; color:#C8C1BB; font:10px/1.5 'IBM Plex Mono',monospace; letter-spacing:.04em; text-transform:uppercase; }.about-signals { display:flex; flex-wrap:wrap; gap:7px; margin-top:24px; }.about-signals span { padding:6px 8px; border:1px solid rgba(232,87,26,.35); color:#D98461; font:9px 'IBM Plex Mono',monospace; letter-spacing:.05em; }
 @media (max-width:800px) { .about-profile { margin-top:29px; padding-left:13px; }.about-profile h3 { font-size:31px; }.profile-specialism { font-size:9px; }.about-signals { gap:5px; }.about-signals span { font-size:8px; padding:5px 6px; } }
+
+/* Mobile readability safeguards: prevent long content from forcing overlap on narrow screens. */
+@media (max-width:800px) {
+  .zorbit-page { overflow-x:clip; }
+  .hero { min-height:auto; padding-bottom:94px; }
+  .hero-actions { flex-wrap:wrap; gap:10px; }
+  .hero-lede,.section-heading > p,.dashboard-heading > p,.about-statement > p,.project p,.dashboard-copy p,.contact-copy p,.contact-note { text-align:left; text-align-last:left; hyphens:manual; overflow-wrap:break-word; }
+  .section-heading,.dashboard-heading,.about-statement,.contact-copy,.contact-panel,.credential-card,.project > div { min-width:0; }
+  .credential-card dl div { align-items:flex-start; gap:15px; }
+  .credential-card dd { max-width:58%; overflow-wrap:anywhere; }
+  .contact-line { align-items:flex-start; flex-wrap:wrap; row-gap:8px; }
+  .contact-line a { min-width:0; overflow-wrap:anywhere; }
+  .contact-note { max-width:none; }
+  .footer { row-gap:20px; }
+  .footer .brand { min-width:0; }
+  .privacy-notice p { text-align:left; overflow-wrap:anywhere; }
+}
+@media (max-width:360px) {
+  .section-shell { width:calc(100% - 28px); }
+  .hero { padding-top:129px; padding-bottom:76px; }
+  .hero h1 { font-size:42px; line-height:.94; }
+  .eyebrow { font-size:8px; letter-spacing:.09em; }
+  .hero-actions .button { padding-inline:12px; font-size:10px; }
+  .brand-banner { width:calc(100% - 28px); grid-template-columns:44px minmax(0,1fr) 28px; gap:9px; }
+  .brand-banner-name strong { font-size:14px; }
+  .brand-banner p { font-size:8px; }
+  .stats-grid { gap:8px; }
+  .stat-number { font-size:28px; }
+  .stat-label { font-size:8px; }
+  .dashboard-copy { padding:15px; }
+  .dashboard-copy h3 { font-size:19px; }
+  .about-profile h3 { font-size:28px; }
+  .contact-copy h2 { font-size:44px; }
+  .privacy-notice { grid-template-columns:1fr auto; }
+  .privacy-signal { display:none; }
+}
 @media (max-width:800px) { .privacy-notice { right:12px; bottom:12px; width:calc(100vw - 24px); grid-template-columns:auto 1fr; gap:10px 13px; }.privacy-notice p { font-size:10px; }.privacy-notice a { grid-column:1 / 2; }.privacy-notice button { grid-column:2 / 3; justify-self:end; } }
 @media (max-width:440px) { h1 { font-size:50px; }.hero-lede { font-size:15px; }.hero-actions { display:block; }.button { width:100%; justify-content:center; margin-bottom:9px; }.services-grid { grid-template-columns:1fr; }.service-card,.service-card + .service-card { padding-left:0; border-right:0; }.service-card h3 { margin-top:40px; }.stats-grid { gap:5px; }.stat-number { font-size:27px; }.stat-label { font-size:9px; }.section-heading h2,.about-statement h2,.cert-section h2 { font-size:48px; } }
