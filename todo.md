@@ -31,6 +31,8 @@
 - [x] Add Universal Skill Academy as the second featured client website in the portfolio.
 - [x] Refine the featured website previews into stronger Zorbit evidence plates with clearer structural hierarchy.
 - [x] Restore justified alignment for the About-section body copy on mobile.
+- [x] Create separate About Us and Meet the Founder pages, using the supplied portrait on the founder page.
+- [x] Strengthen the About Us and Meet the Founder pages with additional Signal Foundry evidence structures.
 
 ## Source requirements
 
@@ -77,3 +79,7 @@ The reported hero overlap was traced to the decorative scroll cue, which was abs
 Universal Skill Academy is now the second featured website project, with a direct live link and a paired evidence preview beside Writers Support Services. Desktop and mobile checks confirm that the staggered website proof plates and all project information remain clear and responsive.
 
 The mobile About-section body paragraphs now retain justified alignment with a left-aligned final line and mobile-safe wrapping.
+
+Desktop review confirms that the About Us and Meet the Founder pages are distinct, consistently routed, and visually aligned with the Signal Foundry direction. The founder portrait is readable and has been incorporated as a portrait-led professional record.
+
+Mobile verification confirms that the About Us and Meet the Founder pages retain clear section hierarchy, readable justified copy, a framed founder portrait, and accessible return and contact actions at a narrow viewport.

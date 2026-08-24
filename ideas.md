@@ -72,3 +72,5 @@ Dashboard imagery is treated as a curated evidence plate: raw product colours ar
 The diagonal-cut Z signal is repeated as a subtle structural marker in section labels, proof rails, and evidence plates rather than used as general decoration. Each major lower-page section keeps an explicit rule, signal marker, or framed evidence treatment to preserve the operating-console rhythm.
 
 Featured client sites are arranged as staggered evidence plates rather than a neutral gallery: raw site colour is restrained, orange proof rails and corner marks contain the screenshots, and offset placement introduces an editorial field-board hierarchy.
+
+Internal company pages use one visible Signal Foundry device per major section: node fields at the page entry, oversized numeric rails, diagonal proof marks, or framed evidence plates. Founder imagery is always treated as curated evidence, not a raw photo: restrained grade, scan texture, mono credentials, and orange verification logic.
