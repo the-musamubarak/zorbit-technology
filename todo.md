@@ -30,6 +30,7 @@
 - [x] Fix the hero utility label overlapping the Work with us button on mobile.
 - [x] Add Universal Skill Academy as the second featured client website in the portfolio.
 - [x] Refine the featured website previews into stronger Zorbit evidence plates with clearer structural hierarchy.
+- [x] Restore justified alignment for the About-section body copy on mobile.
 
 ## Source requirements
 
@@ -74,3 +75,5 @@ After the responsive adjustment, the page was rechecked at 320 px. Long copy, pr
 The reported hero overlap was traced to the decorative scroll cue, which was absolutely positioned into the mobile hero space. It is now intentionally hidden on mobile, while remaining available on larger screens; the affected call-to-action area is clear at the reported viewport width.
 
 Universal Skill Academy is now the second featured website project, with a direct live link and a paired evidence preview beside Writers Support Services. Desktop and mobile checks confirm that the staggered website proof plates and all project information remain clear and responsive.
+
+The mobile About-section body paragraphs now retain justified alignment with a left-aligned final line and mobile-safe wrapping.

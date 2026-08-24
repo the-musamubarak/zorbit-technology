@@ -118,6 +118,9 @@ h1,h2,h3,p { margin:0; } h1 { max-width:780px; font-size:clamp(54px,7.2vw,108px)
   .footer .brand { min-width:0; }
   .privacy-notice p { text-align:left; overflow-wrap:anywhere; }
 }
+@media (max-width:800px) {
+  .about-statement > p { text-align:justify; text-align-last:left; text-justify:inter-word; hyphens:auto; overflow-wrap:break-word; }
+}
 @media (max-width:360px) {
   .section-shell { width:calc(100% - 28px); }
   .hero { padding-top:129px; padding-bottom:76px; }
