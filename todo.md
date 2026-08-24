@@ -25,6 +25,7 @@
 - [x] Refine the dashboard screenshots into subdued Signal Foundry evidence plates.
 - [x] Remove the previously added banner-image showcase sections from the website.
 - [x] Strengthen the remaining lower-page Signal Foundry structures and evidence-plate treatments.
+- [x] Expand the personal About profile and improve text alignment across the site.
 
 ## Source requirements
 
@@ -59,3 +60,5 @@ The five-dashboard data-evidence showcase has been validated on desktop and mobi
 Dashboard cards now reveal the relevant tools on hover or keyboard focus. On touch devices, the same tool tags remain visible without requiring a hover gesture. The screenshot previews are presented as subdued evidence plates, preserving dashboard readability while aligning the gallery with the charcoal-and-orange Signal Foundry system.
 
 After synchronizing to version 96f218d4 and removing the social-banner image grid, the streamlined site has been verified on desktop and mobile. Service content remains available through the capability cards; dashboard and portfolio evidence plates retain clear labels, links, and responsive layouts.
+
+The expanded founder profile and professional details are clear at desktop and mobile sizes. Supporting paragraphs use measured justification with left-aligned final lines, preserving readability while creating a more editorial text rhythm.
