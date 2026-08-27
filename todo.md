@@ -35,6 +35,7 @@
 - [x] Strengthen the About Us and Meet the Founder pages with additional Signal Foundry evidence structures.
 - [x] Draft concise responses for the Skyewise Foundation 2026 Empowerment Grant Application.
 - [x] Add inventory-software screenshots, link the NITDA project to Power BI, and update company positioning for affordable nationwide SME support.
+- [x] Add an SME project inquiry form and a placeholder area for verified client testimonials.
 
 ## Source requirements
 
@@ -89,3 +90,5 @@ Mobile verification confirms that the About Us and Meet the Founder pages retain
 Desktop verification confirms that the inventory-and-debt-tracking project now includes three proof screenshots, the NITDA digital file-tracking project includes its direct Power BI link, and the homepage and About Us page clearly present Zorbit as an affordable nationwide partner for SMEs, businesses, and individuals.
 
 Mobile verification confirms that the inventory proof gallery, NITDA Power BI link, mission and vision panels, and nationwide affordability copy remain readable and properly contained at a narrow viewport.
+
+The verified-feedback placeholder and SME inquiry form have been checked on desktop and mobile. Form fields, service selection, project-details entry, direct email handoff, feedback invitation, and responsive spacing remain clear across both layouts.

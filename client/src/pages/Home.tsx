@@ -1,5 +1,5 @@
 // Signal Foundry: editorial dark-tech landing page with orange signal accents, asymmetry, and restrained motion.
-import { useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   BarChart3,
@@ -86,6 +86,7 @@ export default function Home() {
   const [statsActive, setStatsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showPrivacyNotice, setShowPrivacyNotice] = useState(false);
+  const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loaderTimer = window.setTimeout(() => setIsLoading(false), 1350);
@@ -103,6 +104,22 @@ export default function Home() {
   const acknowledgePrivacyNotice = () => {
     window.localStorage.setItem("zorbit-privacy-notice", "acknowledged");
     setShowPrivacyNotice(false);
+  };
+  const handleInquirySubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const detail = [
+      `Name: ${formData.get("name")}`,
+      `Business: ${formData.get("business") || "Not specified"}`,
+      `Email: ${formData.get("email")}`,
+      `Phone: ${formData.get("phone") || "Not specified"}`,
+      `Service needed: ${formData.get("service")}`,
+      "",
+      "Project details:",
+      `${formData.get("details")}`,
+    ].join("\n");
+    window.location.href = `mailto:hello@zorbittechnology.com?subject=${encodeURIComponent("New Zorbit project inquiry")}&body=${encodeURIComponent(detail)}`;
+    setInquirySubmitted(true);
   };
 
   return <div className="zorbit-page">
@@ -134,7 +151,11 @@ export default function Home() {
 
       <section className="cert-section section-shell"><div><span className="section-index">06 / CREDENTIALS</span><h2>Always<br /><span>keep learning.</span></h2></div><div className="cert-list">{certifications.map((cert) => <div className="cert" key={cert}><Sparkles size={16} /><span>{cert}</span><Check size={16} /></div>)}</div></section>
 
-      <section className="contact-section section-shell" id="contact"><div className="contact-copy"><span className="section-index">07 / NEXT MOVE</span><h2>Ready to work<br /><em>with Zorbit?</em></h2><p>Bring us the messy part. We’ll make it usable.</p></div><div className="contact-panel"><div className="contact-line"><Mail size={19} /><a href="mailto:hello@zorbittechnology.com">hello@zorbittechnology.com</a></div><div className="contact-line"><span className="whatsapp-icon">WA</span><a href="https://wa.me/message/46GKY26SZUWDL1" target="_blank" rel="noreferrer">Message us on WhatsApp</a></div><div className="contact-note">Tell us what you are trying to make clearer, faster, or more useful. We’ll take it from there.</div></div></section>
+      <section className="feedback-section section-shell"><div><span className="section-index">07 / CLIENT FEEDBACK</span><h2>Real work deserves<br /><span>real words.</span></h2></div><div className="feedback-prompt"><Quote size={22} /><h3>Verified client feedback will appear here.</h3><p>We only publish feedback that is shared by real clients and approved for public use. Worked with Zorbit? Tell us about the outcome.</p><a className="text-link" href="mailto:hello@zorbittechnology.com?subject=Zorbit%20client%20feedback">Share verified feedback <ArrowUpRight size={16} /></a></div></section>
+
+      <section className="contact-section section-shell" id="contact"><div className="contact-copy"><span className="section-index">08 / NEXT MOVE</span><h2>Ready to work<br /><em>with Zorbit?</em></h2><p>Bring us the messy part. We’ll make it usable.</p></div><div className="contact-panel"><div className="contact-line"><Mail size={19} /><a href="mailto:hello@zorbittechnology.com">hello@zorbittechnology.com</a></div><div className="contact-line"><span className="whatsapp-icon">WA</span><a href="https://wa.me/message/46GKY26SZUWDL1" target="_blank" rel="noreferrer">Message us on WhatsApp</a></div><div className="contact-note">Tell us what you are trying to make clearer, faster, or more useful. We’ll take it from there.</div></div></section>
+
+      <section className="inquiry-section section-shell" id="inquiry" aria-labelledby="inquiry-title"><div className="inquiry-heading"><span className="section-index">09 / PROJECT INQUIRY</span><h2 id="inquiry-title">Tell us what<br /><span>you need to move.</span></h2><p>Whether you are building a first website, need a clearer dashboard, or want a tool for daily operations, start with a short brief. We work with SMEs, businesses, and individuals nationwide.</p></div><form className="inquiry-form" onSubmit={handleInquirySubmit}><div className="inquiry-form-top"><span>PROJECT BRIEF</span><i>Required fields *</i></div><div className="inquiry-fields"><label>Full name *<input name="name" type="text" autoComplete="name" required placeholder="Your name" /></label><label>Business or organisation<input name="business" type="text" autoComplete="organization" placeholder="Business name" /></label><label>Email address *<input name="email" type="email" autoComplete="email" required placeholder="you@example.com" /></label><label>Phone number<input name="phone" type="tel" autoComplete="tel" placeholder="Your phone number" /></label><label className="field-wide">What do you need? *<select name="service" required defaultValue=""><option value="" disabled>Select a service</option><option value="Data analysis or dashboard">Data analysis or dashboard</option><option value="Website or web application">Website or web application</option><option value="Business software">Business software</option><option value="Research or consulting">Research or consulting</option><option value="Training">Training</option><option value="Not sure yet">Not sure yet</option></select></label><label className="field-wide">Tell us about the project *<textarea name="details" required rows={4} placeholder="What is the problem, what would success look like, and when do you hope to start?" /></label></div><div className="inquiry-submit"><p>Submitting opens your email app with the completed brief. You can also contact us directly on WhatsApp.</p><button type="submit" className="button button-primary">Send project inquiry <ArrowUpRight size={17} /></button></div>{inquirySubmitted && <p className="inquiry-status" role="status">Your email app should now be open with your project brief. If it did not open, use the WhatsApp option above.</p>}</form></section>
     </main>
 
     <footer className="footer section-shell"><a className="brand" href="#home"><img className="brand-mark" src="/manus-storage/zorbit-mark_5e4a6e4a.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><div className="footer-meta"><span>© 2026 Zorbit Technology</span><span>CAC Registered · Serving clients nationwide</span></div><div className="socials"><a href="mailto:hello@zorbittechnology.com" aria-label="Email"><Mail size={17} /></a><a href="#contact" aria-label="LinkedIn"><Linkedin size={17} /></a><a href="#home" aria-label="X"><XIcon size={17} /></a></div></footer>
