@@ -74,3 +74,5 @@ The diagonal-cut Z signal is repeated as a subtle structural marker in section l
 Featured client sites are arranged as staggered evidence plates rather than a neutral gallery: raw site colour is restrained, orange proof rails and corner marks contain the screenshots, and offset placement introduces an editorial field-board hierarchy.
 
 Internal company pages use one visible Signal Foundry device per major section: node fields at the page entry, oversized numeric rails, diagonal proof marks, or framed evidence plates. Founder imagery is always treated as curated evidence, not a raw photo: restrained grade, scan texture, mono credentials, and orange verification logic.
+
+The header always carries the geometric orange Z mark and deliberately spaced uppercase ZORBIT wordmark at a seal-like scale that remains legible on small screens. Long scrolling pages must retain distinct Signal Foundry chapter breaks through numeric rails, asymmetric node fields, framed evidence plates, or diagonal proof markers. Primary proof pathways, including testimonials and portfolio links, use the burnt-orange signal decisively while keeping it a controlled accent.

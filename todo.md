@@ -37,6 +37,7 @@
 - [x] Add inventory-software screenshots, link the NITDA project to Power BI, and update company positioning for affordable nationwide SME support.
 - [x] Add an SME project inquiry form and a placeholder area for verified client testimonials.
 - [x] Publish the seven client testimonials supplied by the business.
+- [x] Add a mobile testimonial carousel with initials avatars and case-study links for relevant reviews.
 
 ## Source requirements
 
@@ -95,3 +96,5 @@ Mobile verification confirms that the inventory proof gallery, NITDA Power BI li
 The verified-feedback placeholder and SME inquiry form have been checked on desktop and mobile. Form fields, service selection, project-details entry, direct email handoff, feedback invitation, and responsive spacing remain clear across both layouts.
 
 The seven supplied testimonials are now displayed as a responsive client-feedback grid. Desktop review confirms an asymmetric evidence-led layout, and mobile review confirms that names, roles, ratings, and full review text remain readable without overlap.
+
+The feedback area now presents one testimonial at a time on mobile through native swipe scrolling with previous/next controls and progress dots. Each reviewer has a distinct initials avatar, and only testimonials clearly tied to a website, dashboard, or inventory project carry a direct case-study link. Type-check and production build pass.
