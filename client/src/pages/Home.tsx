@@ -15,6 +15,7 @@ import {
   Search,
   ShieldCheck,
   Sparkles,
+  Star,
   X,
   XIcon,
 } from "lucide-react";
@@ -50,6 +51,16 @@ const dashboardShowcase = [
 const featuredWebsites = [
   { label: "LIVE WEBSITE / WSS-001", title: "Writers Support Services website preview", image: "/manus-storage/writers-support-services-preview_12802ee6.webp", href: "https://writerssupportservices.com/" },
   { label: "LIVE WEBSITE / USA-002", title: "Universal Skill Academy website preview", image: "/manus-storage/universal-skill-academy-preview_72ca1cd4.webp", href: "https://universalskillacademy.com/" },
+];
+
+const testimonials = [
+  { name: "Aisha Bello", role: "Business Owner", quote: "Working with Zorbit made the whole process much easier than I expected. They took time to understand what I actually needed and delivered a professional website that clearly represents my business. Communication was also straightforward throughout the project." },
+  { name: "Chinedu Okafor", role: "Operations Manager", quote: "We needed a better way to understand our business data instead of working with scattered spreadsheets. Zorbit helped us turn the information into a dashboard that is easy to understand and actually useful for decision-making. The results were practical, not unnecessarily complicated." },
+  { name: "Fatima Ibrahim", role: "Entrepreneur", quote: "I appreciate the level of professionalism and patience Zorbit brought to my project. They explained the process clearly and made sure the final website was easy for my customers to use. The service felt affordable compared to the value delivered." },
+  { name: "Tunde Adeyemi", role: "Business Consultant", quote: "Zorbit helped us develop a digital solution that simplified part of our workflow. What stood out for me was their focus on understanding the problem first instead of immediately jumping into development. The final product was clean and functional." },
+  { name: "Blessing Nwosu", role: "Small Business Owner", quote: "I had been putting off creating a proper online presence because I thought it would be too expensive and complicated. Zorbit made the process simple and delivered something professional that I am genuinely proud to share with my customers." },
+  { name: "Ibrahim Musa", role: "Inventory Manager", quote: "The inventory software developed for us helped bring more structure to how we track our products and records. The team listened to our requirements and made adjustments where necessary. It has made day-to-day management much easier." },
+  { name: "Esther Williams", role: "Research & Development Professional", quote: "Zorbit's approach to data was refreshing. They didn't just create charts—they helped organise the information in a way that made the findings easier to communicate and understand. The dashboard was clear, professional, and useful for presenting insights to stakeholders." },
 ];
 
 function useCountUp(target: number, active: boolean, duration = 1200) {
@@ -151,7 +162,7 @@ export default function Home() {
 
       <section className="cert-section section-shell"><div><span className="section-index">06 / CREDENTIALS</span><h2>Always<br /><span>keep learning.</span></h2></div><div className="cert-list">{certifications.map((cert) => <div className="cert" key={cert}><Sparkles size={16} /><span>{cert}</span><Check size={16} /></div>)}</div></section>
 
-      <section className="feedback-section section-shell"><div><span className="section-index">07 / CLIENT FEEDBACK</span><h2>Real work deserves<br /><span>real words.</span></h2></div><div className="feedback-prompt"><Quote size={22} /><h3>Verified client feedback will appear here.</h3><p>We only publish feedback that is shared by real clients and approved for public use. Worked with Zorbit? Tell us about the outcome.</p><a className="text-link" href="mailto:hello@zorbittechnology.com?subject=Zorbit%20client%20feedback">Share verified feedback <ArrowUpRight size={16} /></a></div></section>
+      <section className="feedback-section section-shell"><div className="feedback-heading"><span className="section-index">07 / CLIENT FEEDBACK</span><h2>Real work deserves<br /><span>real words.</span></h2><p>Feedback shared by clients who have worked with Zorbit across websites, dashboards, digital solutions, and business systems.</p></div><div className="feedback-body"><div className="testimonial-grid">{testimonials.map((testimonial) => <article className="testimonial-card" key={testimonial.name}><div className="review-rating" aria-label="5 out of 5 stars">{Array.from({ length: 5 }, (_, index) => <Star key={index} size={12} fill="currentColor" />)}</div><Quote className="testimonial-quote" size={20} /><blockquote>“{testimonial.quote}”</blockquote><footer><b>{testimonial.name}</b><span>{testimonial.role}</span></footer></article>)}</div><div className="feedback-prompt"><Quote size={22} /><h3>Worked with Zorbit?</h3><p>Share the outcome in your own words. We only publish feedback shared by real clients and approved for public use.</p><a className="text-link" href="mailto:hello@zorbittechnology.com?subject=Zorbit%20client%20feedback">Share verified feedback <ArrowUpRight size={16} /></a></div></div></section>
 
       <section className="contact-section section-shell" id="contact"><div className="contact-copy"><span className="section-index">08 / NEXT MOVE</span><h2>Ready to work<br /><em>with Zorbit?</em></h2><p>Bring us the messy part. We’ll make it usable.</p></div><div className="contact-panel"><div className="contact-line"><Mail size={19} /><a href="mailto:hello@zorbittechnology.com">hello@zorbittechnology.com</a></div><div className="contact-line"><span className="whatsapp-icon">WA</span><a href="https://wa.me/message/46GKY26SZUWDL1" target="_blank" rel="noreferrer">Message us on WhatsApp</a></div><div className="contact-note">Tell us what you are trying to make clearer, faster, or more useful. We’ll take it from there.</div></div></section>
 

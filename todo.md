@@ -36,6 +36,7 @@
 - [x] Draft concise responses for the Skyewise Foundation 2026 Empowerment Grant Application.
 - [x] Add inventory-software screenshots, link the NITDA project to Power BI, and update company positioning for affordable nationwide SME support.
 - [x] Add an SME project inquiry form and a placeholder area for verified client testimonials.
+- [x] Publish the seven client testimonials supplied by the business.
 
 ## Source requirements
 
@@ -92,3 +93,5 @@ Desktop verification confirms that the inventory-and-debt-tracking project now i
 Mobile verification confirms that the inventory proof gallery, NITDA Power BI link, mission and vision panels, and nationwide affordability copy remain readable and properly contained at a narrow viewport.
 
 The verified-feedback placeholder and SME inquiry form have been checked on desktop and mobile. Form fields, service selection, project-details entry, direct email handoff, feedback invitation, and responsive spacing remain clear across both layouts.
+
+The seven supplied testimonials are now displayed as a responsive client-feedback grid. Desktop review confirms an asymmetric evidence-led layout, and mobile review confirms that names, roles, ratings, and full review text remain readable without overlap.
