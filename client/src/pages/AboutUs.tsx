@@ -10,7 +10,7 @@ const principles = [
 
 export default function AboutUs() {
   return <div className="about-page">
-    <header className="subpage-header"><a className="brand" href="/"><img className="brand-mark" src="/manus-storage/zorbit-mark_5e4a6e4a.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><nav className="subpage-nav"><a href="/">Home</a><a href="/#services">Services</a><a href="/#work">Portfolio</a><a href="/about" aria-current="page">About Us</a><a className="nav-cta" href="/#contact">Contact <ArrowUpRight size={15} /></a></nav></header>
+    <header className="subpage-header"><a className="brand" href="/"><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><nav className="subpage-nav"><a href="/">Home</a><a href="/#services">Services</a><a href="/#work">Portfolio</a><a href="/about" aria-current="page">About Us</a><a className="nav-cta" href="/#contact">Contact <ArrowUpRight size={15} /></a></nav></header>
     <main>
       <section className="about-page-hero section-shell"><div className="subpage-nodefield" aria-hidden="true"><i /><i /><i /><i /><i /><b /><b /><b /></div><div className="page-return"><ArrowLeft size={15} /><a href="/">Back to home</a></div><span className="section-index">ABOUT US / 01</span><div className="about-page-intro"><h1>Technology that<br /><span>moves the work.</span></h1><p>Zorbit Technology offers affordable data and digital services for SMEs, growing businesses, institutions, entrepreneurs, and individuals across all states.</p></div><div className="about-page-signal"><Network size={21} /><span>NATIONWIDE DELIVERY</span><i /><span>CAC REGISTERED</span></div></section>
 
@@ -20,6 +20,6 @@ export default function AboutUs() {
 
       <section className="company-cta section-shell"><div><span className="section-index">THE PEOPLE BEHIND THE WORK / 03</span><h2>Meet the founder<br /><em>behind Zorbit.</em></h2></div><div><p>Learn more about the technical perspective, education, and mission that shape the company’s approach.</p><a className="button button-primary" href="/founder">Meet Musa Mubarak <ArrowUpRight size={17} /></a></div></section>
     </main>
-    <footer className="subpage-footer section-shell"><a className="brand" href="/"><img className="brand-mark" src="/manus-storage/zorbit-mark_5e4a6e4a.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><span>© 2026 Zorbit Technology · Serving clients nationwide</span><a href="/#contact">Start a conversation <ChevronRight size={15} /></a></footer>
+    <footer className="subpage-footer section-shell"><a className="brand" href="/"><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><span>© 2026 Zorbit Technology · Serving clients nationwide</span><a href="/#contact">Start a conversation <ChevronRight size={15} /></a></footer>
   </div>;
 }
