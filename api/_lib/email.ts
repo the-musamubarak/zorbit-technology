@@ -22,6 +22,7 @@ type ResendEmail = {
   replyTo?: string;
   subject: string;
   text: string;
+  html?: string;
 };
 
 async function sendResendEmail(email: ResendEmail): Promise<void> {
@@ -43,6 +44,7 @@ async function sendResendEmail(email: ResendEmail): Promise<void> {
       reply_to: email.replyTo,
       subject: email.subject,
       text: email.text,
+      html: email.html,
     }),
   });
 
@@ -93,6 +95,13 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
   }
 
   const firstName = lead.name.trim().split(/\s+/)[0] || lead.name;
+  const escapedFirstName = firstName.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  })[character] || character);
   const text = [
     `Hi ${firstName},`,
     "",
@@ -113,6 +122,24 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
       from,
       subject: "We've received your project inquiry — Zorbit Technology",
       text,
+      html: `<!DOCTYPE html>
+<html lang="en">
+  <body style="margin:0;background-color:#000000;color:#FAF7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:155%;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#000000;">
+      <tr><td>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#000000;color:#FAF7F4;">
+          <tr><td style="padding:24px 0;">
+            <p style="margin:0 0 12px;color:#B8B0A9;">Hi ${escapedFirstName},</p>
+            <p style="margin:0 0 12px;color:#B8B0A9;">Thanks for reaching out to <strong>Zorbit Technology</strong>. This confirms we've received your message and will get back to you within 24 hours.</p>
+            <p style="margin:0 0 12px;color:#B8B0A9;">If it's urgent, you can also reach us on WhatsApp: <a href="https://wa.me/message/46GKY26SZUWDL1" style="color:#E8571A;font-weight:700;">WhatsApp</a></p>
+            <h2 style="margin:0;color:#E8571A;font-size:18px;line-height:125%;">Zorbit Technology<br />zorbittechnology.com.ng</h2>
+            <img alt="Zorbit Technology logo" height="65" width="65" src="https://resend-attachments.s3.amazonaws.com/469d08b3-5513-475d-867a-8265aa261834" style="display:block;margin-top:16px;border:0;border-radius:8px;" />
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+  </body>
+</html>`,
     });
   } catch (error) {
     console.error("[Email] Failed to send visitor auto-reply:", error);
