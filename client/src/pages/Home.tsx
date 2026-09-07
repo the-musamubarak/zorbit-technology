@@ -338,27 +338,8 @@ export default function Home() {
     const card = track.children.item(nextIndex) as HTMLElement | null;
     card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
     setActiveTestimonial(nextIndex);
-    setTestimonialPaused(true);
   };
-  // Gentle auto-advance: pauses on hover/touch/focus and whenever the
-  // visitor manually navigates, and never runs if the browser reports a
-  // reduced-motion preference.
-  const [testimonialPaused, setTestimonialPaused] = useState(false);
-  useEffect(() => {
-    if (testimonialPaused) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = window.setInterval(() => {
-      setActiveTestimonial((current) => {
-        const next = (current + 1) % testimonials.length;
-        const track = testimonialTrackRef.current;
-        const card = track?.children.item(next) as HTMLElement | null;
-        card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-        return next;
-      });
-    }, 6500);
-    return () => window.clearInterval(timer);
-  }, [testimonialPaused]);
-  const pauseTestimonialAutoplay = () => setTestimonialPaused(true);
+  const pauseTestimonialAutoplay = () => undefined;
 
   return <div className="zorbit-page">
     <div className={isLoading ? "site-loader" : "site-loader site-loader-exit"} role="status" aria-live="polite" aria-label="Loading Zorbit Technology">
