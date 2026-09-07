@@ -1,5 +1,3 @@
-import { Resend } from "resend";
-
 /**
  * Email notifications via Resend. Configure via env vars (see .env.example):
  *   RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL, EMAIL_FROM
@@ -8,22 +6,6 @@ import { Resend } from "resend";
  * a console warning) rather than throwing — a missing mail setup should
  * never crash the inquiry endpoint.
  */
-
-let _resend: Resend | null = null;
-let _attemptedInit = false;
-
-function getClient(): Resend | null {
-  if (_attemptedInit) return _resend;
-  _attemptedInit = true;
-
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("[Email] RESEND_API_KEY not set — emails will be skipped. Set it in your Vercel project's environment variables.");
-    return null;
-  }
-  _resend = new Resend(apiKey);
-  return _resend;
-}
 
 export type LeadNotificationInput = {
   name: string;
@@ -34,11 +16,43 @@ export type LeadNotificationInput = {
   details: string;
 };
 
+type ResendEmail = {
+  to: string;
+  from: string;
+  replyTo?: string;
+  subject: string;
+  text: string;
+};
+
+async function sendResendEmail(email: ResendEmail): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("[Email] RESEND_API_KEY not set — emails will be skipped. Set it in your Vercel project's environment variables.");
+    return;
+  }
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      to: email.to,
+      from: email.from,
+      reply_to: email.replyTo,
+      subject: email.subject,
+      text: email.text,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Resend rejected the email with status ${response.status}`);
+  }
+}
+
 /** Notifies the Zorbit team that a new inquiry came in. */
 export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Promise<void> {
-  const resend = getClient();
-  if (!resend) return;
-
   const to = process.env.LEAD_NOTIFICATION_EMAIL;
   const from = process.env.EMAIL_FROM;
   if (!to || !from) {
@@ -58,7 +72,7 @@ export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Pr
   ].join("\n");
 
   try {
-    await resend.emails.send({
+    await sendResendEmail({
       to,
       from,
       replyTo: lead.email,
@@ -72,9 +86,6 @@ export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Pr
 
 /** Confirms receipt to the person who submitted the inquiry, setting a 24-hour reply expectation. */
 export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promise<void> {
-  const resend = getClient();
-  if (!resend) return;
-
   const from = process.env.EMAIL_FROM;
   if (!from) {
     console.warn("[Email] EMAIL_FROM missing — skipping visitor auto-reply.");
@@ -97,7 +108,7 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
   ].join("\n");
 
   try {
-    await resend.emails.send({
+    await sendResendEmail({
       to: lead.email,
       from,
       subject: "We've received your project inquiry — Zorbit Technology",

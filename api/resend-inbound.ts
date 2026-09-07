@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { Resend } from "resend";
 
 /**
  * Receives Resend's email.received webhook and forwards the message to the
@@ -36,7 +35,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const resend = new Resend(apiKey);
     const receivedResponse = await fetch(`https://api.resend.com/emails/receiving/${event.data.email_id}`, {
       headers: { Authorization: `Bearer ${apiKey}` },
     });
@@ -55,23 +53,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const body = received.text || received.html || "(No message body)";
-    await resend.emails.send({
+    const sendEmail = async (email: { to: string; subject: string; text: string; replyTo?: string }) => {
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ to: email.to, from, reply_to: email.replyTo, subject: email.subject, text: email.text }),
+      });
+      if (!response.ok) throw new Error(`Resend rejected the email with status ${response.status}`);
+    };
+
+    await sendEmail({
       to,
-      from,
       replyTo: received.from,
       subject: `Forwarded email: ${received.subject || "(no subject)"}`,
       text: [`From: ${received.from}`, `To: ${received.to || ""}`, "", body].join("\n"),
     });
 
-    await resend.emails.send({
+    await sendEmail({
       to: received.from,
-      from,
       subject: "Thanks for contacting Zorbit Technology",
-      text: [
-        "Thanks for contacting Zorbit Technology.",
-        "",
-        "We've received your email and will get back to you within 24 hours.",
-      ].join("\n"),
+      text: ["Thanks for contacting Zorbit Technology.", "", "We've received your email and will get back to you within 24 hours."].join("\n"),
     });
 
     return res.status(200).json({ success: true });
