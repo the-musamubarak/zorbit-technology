@@ -57,6 +57,21 @@ const caseStudies: CaseStudyData[] = [
       { src: "/images/inventory-app-users.png", alt: "Inventory software user management view" },
     ],
   },
+  {
+    slug: "topup-hub",
+    eyebrow: "CASE STUDY / DIGITAL COMMERCE",
+    title: ["Building the plumbing behind", "everyday top-ups."],
+    intro: "TopUp Hub is a Nigerian VTU (virtual top-up) platform — the kind of everyday app people trust to move real money, in real time, without a second thought.",
+    problem: "A VTU platform lives or dies on reliability: a customer buying airtime, data, or paying a bill expects the transaction to go through cleanly and the wallet balance to reflect it immediately. That reliability depends on wallet funding, provider routing, and payment confirmation all working together without silent failure points.",
+    approach: "We built TopUp Hub with a dual-provider architecture so a transaction has a fallback path instead of a single point of failure, with Paystack handling wallet funding end-to-end. The focus throughout was on keeping the customer-facing flow simple and predictable — fund wallet, transact, see the result — while the routing and provider logic underneath does the harder work of staying reliable.",
+    result: "TopUp Hub gives customers a dependable, straightforward way to handle everyday digital top-ups and payments, with wallet funding confirmed working end-to-end and a provider setup built to keep transactions moving rather than stalling on a single point of failure.",
+    tools: ["React", "Supabase", "Paystack"],
+    images: [
+      { src: "/images/topup-hub-1.png", alt: "TopUp Hub VTU application screenshot 1" },
+      { src: "/images/topup-hub-2.png", alt: "TopUp Hub VTU application screenshot 2" },
+      { src: "/images/topup-hub-3.png", alt: "TopUp Hub VTU application screenshot 3" },
+    ],
+  },
 ];
 
 export default function CaseStudy() {
@@ -66,7 +81,7 @@ export default function CaseStudy() {
   if (!study) return <NotFound />;
 
   return <div className="about-page">
-    <header className="subpage-header"><a className="brand" href="/"><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><nav className="subpage-nav"><a href="/">Home</a><a href="/#work">Portfolio</a><a href="/about">About Us</a><a className="nav-cta" href="/#contact">Contact <ArrowUpRight size={15} /></a></nav></header>
+    <header className="subpage-header"><a className="brand" href="/"><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><nav className="subpage-nav"><a href="/">Home</a><a href="/#work">Portfolio</a><a href="/about">About Us</a><a className="nav-cta" href="/founder">Meet the founder <ArrowUpRight size={15} /></a><a className="nav-cta" href="/#contact">Contact <ArrowUpRight size={15} /></a></nav></header>
     <main>
       <section className="about-page-hero section-shell"><div className="subpage-nodefield" aria-hidden="true"><i /><i /><i /><i /><i /><b /><b /><b /></div><div className="page-return"><ArrowLeft size={15} /><a href="/#work">Back to portfolio</a></div><span className="section-index">{study.eyebrow}</span><div className="about-page-intro"><h1>{study.title[0]}<br /><span>{study.title[1]}</span></h1><p>{study.intro}</p></div><div className="about-page-signal"><Network size={21} /><span>{study.tools.join(" · ")}</span></div></section>
 

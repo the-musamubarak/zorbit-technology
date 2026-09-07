@@ -1,6 +1,6 @@
 // Signal Foundry: editorial dark-tech landing page with orange signal accents, asymmetry, and restrained motion.
-import { trpc } from "@/lib/trpc";
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform, type Variants } from "framer-motion";
+import { type FormEvent, type MouseEvent, useEffect, useRef, useState } from "react";
 import {
   ArrowUpRight,
   BarChart3,
@@ -24,6 +24,60 @@ import {
 
 const ORANGE = "#E8571A";
 
+// --- Premium motion primitives -------------------------------------------
+// Applied DIRECTLY to the existing card elements (never via a wrapper div)
+// because this layout leans on :nth-child and grid-column CSS rules that
+// only work when the element sits at its original position in the DOM —
+// an extra wrapper would silently break those rules.
+const revealVariants: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay: (i % 4) * 0.08, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+const revealProps = (index: number) => ({
+  custom: index,
+  variants: revealVariants,
+  initial: "hidden" as const,
+  whileInView: "visible" as const,
+  viewport: { once: true, amount: 0.2, margin: "-40px" },
+});
+
+// Cursor-tracking 3D tilt + a soft light that follows the pointer, composed
+// entirely through framer-motion's own transform system so it layers
+// cleanly on top of the scroll-reveal's y-position and a hover lift,
+// instead of fighting the stylesheet's own `transform` declarations.
+function useCardTilt() {
+  const rotateX = useSpring(0, { stiffness: 220, damping: 22 });
+  const rotateY = useSpring(0, { stiffness: 220, damping: 22 });
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+  const glowBackground = useTransform([glowX, glowY], ([x, y]) => `radial-gradient(320px circle at ${x}% ${y}%, rgba(232,87,26,.18), transparent 68%)`);
+
+  const onMouseMove = (event: MouseEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width;
+    const py = (event.clientY - rect.top) / rect.height;
+    rotateY.set((px - 0.5) * 8);
+    rotateX.set((0.5 - py) * 8);
+    glowX.set(px * 100);
+    glowY.set(py * 100);
+  };
+  const onMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
+  return { rotateX, rotateY, glowBackground, onMouseMove, onMouseLeave };
+}
+
+/** The soft pointer-following light, rendered as the first child of a tilt card. */
+function CardGlow({ background }: { background: ReturnType<typeof useTransform<[number, number], string>> }) {
+  return <motion.span className="card-glow" style={{ background }} aria-hidden="true" />;
+}
+
 const services = [
   { index: "01", icon: BarChart3, title: "Data Analytics & Power BI", text: "Interactive dashboards, KPI reporting, and DAX models that give teams a clearer operating picture." },
   { index: "02", icon: Code2, title: "Websites, Apps & Software", text: "Company websites, personal portfolios, custom web apps, and business software designed to do real work." },
@@ -35,36 +89,129 @@ const projects = [
   { number: "01", title: "Writers Support Services", tools: ["Website build", "Resource store", "Workshop flow"], text: "An academic-services platform that gives researchers a clearer route from service discovery to consultation, resource access, and workshop registration.", href: "https://writerssupportservices.com/", linkLabel: "Visit live website", caseStudyHref: "/case-studies/writers-support-services" },
   { number: "02", title: "Universal Skill Academy", tools: ["Website build", "Programme discovery", "Campaign CTA"], text: "A national skills-development website that makes mission, programmes, campaign information, and partnership pathways clear for young people, institutions, and collaborators.", href: "https://universalskillacademy.com/", linkLabel: "Visit live website", caseStudyHref: "/case-studies/universal-skill-academy" },
   { number: "03", title: "Inventory & Debt Tracking Software", tools: ["Inventory control", "Debt tracking", "Business reporting"], text: "A single operating view that helps a client see stock position, sales movement, outstanding debt, staff access, and daily records before they become leaks.", href: "/case-studies/inventory-software", linkLabel: "Read the case study", images: [{ src: "/images/inventory-app-dashboard.png", alt: "Inventory software dashboard showing sales, receivables, stock value and product signals" }, { src: "/images/inventory-app-reports.png", alt: "Inventory software reporting view showing revenue, profit, sales, and returns" }, { src: "/images/inventory-app-users.png", alt: "Inventory software user management view" }] },
-  { number: "04", title: "NITDA Digital File Tracking Dashboard", tools: ["Power BI", "DAX", "Python"], text: "A usable audit trail that helps teams see file movement, bottlenecks, and operational throughput with less guesswork.", href: "https://app.powerbi.com/view?r=eyJrIjoiYzQ3MTAyODMtY2NjNC00YjBmLWFiNDAtZjhmMmQzODYxNTFlIiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9", linkLabel: "View Power BI dashboard" },
+  { number: "04", title: "NITDA Digital File Tracking Dashboard", tools: ["Power BI", "DAX", "Python"], text: "An independent innovation-challenge entry built by Zorbit's founder: a usable audit trail that shows file movement, bottlenecks, and operational throughput with less guesswork.", href: "https://app.powerbi.com/view?r=eyJrIjoiYzQ3MTAyODMtY2NjNC00YjBmLWFiNDAtZjhmMmQzODYxNTFlIiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9", linkLabel: "View Power BI dashboard" },
   { number: "05", title: "Nigerian Road Traffic Crashes Dashboard", tools: ["Power BI", "NBS/FRSC data", "Visual reporting"], text: "A decision view that surfaces crash patterns in a form stakeholders can compare, interpret, and act on." },
-  { number: "06", title: "TopUp Hub VTU Application", tools: ["React", "Supabase", "Paystack"], text: "A dependable operating flow for everyday digital top-ups and payments, designed to keep customer actions clear and moving." },
+  { number: "06", title: "TopUp Hub VTU Application", tools: ["React", "Supabase", "Paystack"], text: "A dependable operating flow for everyday digital top-ups and payments, designed to keep customer actions clear and moving.", href: "/case-studies/topup-hub", linkLabel: "Read the case study", images: [{ src: "/images/topup-hub-1.png", alt: "TopUp Hub VTU application screenshot 1" }, { src: "/images/topup-hub-2.png", alt: "TopUp Hub VTU application screenshot 2" }, { src: "/images/topup-hub-3.png", alt: "TopUp Hub VTU application screenshot 3" }] },
 ];
 
 const certifications = ["Microsoft Power BI Data Analyst", "Google Data Analytics", "Microsoft Full-Stack Developer", "NITDA Data Analytics Associate"];
 
 const dashboardShowcase = [
   { number: "01", title: "Insurance Dashboard", caption: "An operating view for reading insurance performance and portfolio activity in one place.", tools: ["Power BI", "DAX", "Power Query"], image: "/images/dashboard-insurance.png", href: "https://app.powerbi.com/view?r=eyJrIjoiYzQ0YjdkZTgtMjExNi00MjU0LTk0YzYtMmM2MDhmYmU1ZGM0IiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9&embedImagePlaceholder=true&pageName=732b15e505165348cb75" },
-  { number: "02", title: "NITDA Dashboard", caption: "A clearer data view for monitoring digital-file activity, operational movement, and programme visibility.", tools: ["Power BI", "DAX", "Python"], image: "/images/dashboard-nitda.png", href: "https://app.powerbi.com/view?r=eyJrIjoiYzQ3MTAyODMtY2NjNC00YjBmLWFiNDAtZjhmMmQzODYxNTFlIiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9" },
+  { number: "02", title: "NITDA Dashboard", caption: "An independent innovation-challenge entry built by Zorbit's founder for clearer visibility into digital-file activity and operational movement.", tools: ["Power BI", "DAX", "Python"], image: "/images/dashboard-nitda.png", href: "https://app.powerbi.com/view?r=eyJrIjoiYzQ3MTAyODMtY2NjNC00YjBmLWFiNDAtZjhmMmQzODYxNTFlIiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9" },
   { number: "03", title: "UK Accident Dashboard", caption: "A decision view that surfaces road-incident patterns, trends, and priority signals for faster interpretation.", tools: ["Power BI", "DAX", "Power Query"], image: "/images/dashboard-uk-accident.png", href: "https://app.powerbi.com/view?r=eyJrIjoiMDU3MDAxOGItYjg1MS00NDQ5LTkyNGYtMGRkM2U0MThhOWFhIiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9" },
   { number: "04", title: "Supermarket Dashboard", caption: "A compact commercial view of sales movement, category performance, and day-to-day retail activity.", tools: ["Power BI", "DAX", "Data Modelling"], image: "/images/dashboard-supermarket.png", href: "https://app.powerbi.com/view?r=eyJrIjoiMmI2OTgxZDAtNmVkMi00YTNmLTk3MWMtNjgwZTRlYjM3MWI2IiwidCI6ImJiODFhNDdjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9" },
   { number: "05", title: "Fitness Dashboard", caption: "A visual evidence board for tracking fitness and performance indicators in a usable reporting format.", tools: ["Power BI", "DAX", "Power Query"], image: "/images/dashboard-fitness.png", href: "https://app.powerbi.com/view?r=eyJrIjoiZDc2ZTg3ZmYtYTMyYi00ODkxLTgxMzgtNGIyODAwOGVmOWJlIiwidCI6ImJiODFhNDcjLTJiMzMtNGVkOC05NGZlLTgwM2YwYmJiZjE0OSJ9" },
 ];
 
 const featuredWebsites = [
-  { label: "LIVE WEBSITE / WSS-001", title: "Writers Support Services website preview", image: "/images/website-writers-support-services.webp", href: "https://writerssupportservices.com/" },
-  { label: "LIVE WEBSITE / USA-002", title: "Universal Skill Academy website preview", image: "/images/website-universal-skill-academy.webp", href: "https://universalskillacademy.com/" },
+  { label: "LIVE WEBSITE / WSS-001", title: "Writers Support Services website preview", image: "/images/website-writers-support-services.png", href: "https://writerssupportservices.com/" },
+  { label: "LIVE WEBSITE / USA-002", title: "Universal Skill Academy website preview", image: "/images/website-universal-skill-academy.png", href: "https://universalskillacademy.com/" },
 ];
 
-// Ordered deliberately: website testimonials first (most people's entry
-// point into Zorbit's work), then dashboards, then the inventory system,
-// closing on a general trust-and-process quote with no case study link.
+function DashboardCard({ dashboard, index }: { dashboard: (typeof dashboardShowcase)[number]; index: number }) {
+  const tilt = useCardTilt();
+  return (
+    <motion.article
+      className="dashboard-card"
+      style={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY, transformPerspective: 900 }}
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      {...revealProps(index)}
+    >
+      <CardGlow background={tilt.glowBackground} />
+      <a className="dashboard-image" href={dashboard.href} target="_blank" rel="noreferrer" aria-label={`Open ${dashboard.title} in Power BI`}>
+        <img src={dashboard.image} alt={`${dashboard.title} preview`} loading="lazy" />
+        <span>OPEN DASHBOARD <ArrowUpRight size={15} /></span>
+        <div className="dashboard-tools" aria-label={`Tools used: ${dashboard.tools.join(", ")}`}><small>TOOLS USED</small><div>{dashboard.tools.map((tool) => <b key={tool}>{tool}</b>)}</div></div>
+      </a>
+      <div className="dashboard-copy">
+        <span>{dashboard.number} / POWER BI</span>
+        <h3>{dashboard.title}</h3>
+        <p>{dashboard.caption}</p>
+        <motion.a href={dashboard.href} target="_blank" rel="noreferrer" whileHover="hover" initial="rest">
+          View dashboard <motion.span style={{ display: "inline-flex" }} variants={{ rest: { x: 0 }, hover: { x: 4 } }} transition={{ type: "spring", stiffness: 400, damping: 20 }}><ArrowUpRight size={14} /></motion.span>
+        </motion.a>
+      </div>
+    </motion.article>
+  );
+}
+
+function PortfolioWebsiteThumb({ website, index }: { website: (typeof featuredWebsites)[number]; index: number }) {
+  const tilt = useCardTilt();
+  return (
+    <motion.a
+      className="portfolio-website"
+      href={website.href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Visit ${website.title}`}
+      style={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY, transformPerspective: 900 }}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      {...revealProps(index)}
+    >
+      <CardGlow background={tilt.glowBackground} />
+      <img src={website.image} alt={website.title} loading="lazy" />
+      <span className="art-label">{website.label} <ArrowUpRight size={13} /></span>
+    </motion.a>
+  );
+}
+
+function ProjectCard({ project, index }: { project: (typeof projects)[number]; index: number }) {
+  const tilt = useCardTilt();
+  const href = "href" in project ? project.href : undefined;
+  const linkLabel = "linkLabel" in project ? project.linkLabel : undefined;
+  const caseStudyHref = "caseStudyHref" in project ? project.caseStudyHref : undefined;
+  const images = "images" in project ? project.images : undefined;
+  const isInternal = href?.startsWith("/");
+
+  return (
+    <motion.article
+      id={project.title === "Inventory & Debt Tracking Software" ? "inventory-case-study" : undefined}
+      className="project"
+      style={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY, transformPerspective: 1400 }}
+      onMouseMove={tilt.onMouseMove}
+      onMouseLeave={tilt.onMouseLeave}
+      {...revealProps(index)}
+    >
+      <CardGlow background={tilt.glowBackground} />
+      <span className="project-number">{project.number}</span>
+      <div>
+        <h3>{project.title}</h3>
+        <p>{project.text}</p>
+        <div className="tags">{project.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+        {images && <div className="project-proof-gallery" aria-label={`${project.title} screenshots`}>{images.map((image) => <a href={image.src} target="_blank" rel="noreferrer" key={image.src}><img src={image.src} alt={image.alt} loading="lazy" /></a>)}</div>}
+        <div className="project-links">
+          {href && (isInternal ? <a className="project-link" href={href}>{linkLabel} <ArrowUpRight size={14} /></a> : <a className="project-link" href={href} target="_blank" rel="noreferrer">{linkLabel} <ArrowUpRight size={14} /></a>)}
+          {caseStudyHref && <a className="project-link" href={caseStudyHref}>Read the case study <ArrowUpRight size={14} /></a>}
+        </div>
+      </div>
+      {href ? (
+        isInternal
+          ? <motion.a href={href} className="project-arrow" aria-label={`Read the ${project.title} case study`} whileHover={{ x: 5, y: -5 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}><ArrowUpRight size={20} /></motion.a>
+          : <motion.a href={href} className="project-arrow" target="_blank" rel="noreferrer" aria-label={`Visit ${project.title}`} whileHover={{ x: 5, y: -5 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}><ArrowUpRight size={20} /></motion.a>
+      ) : <ArrowUpRight className="project-arrow" size={20} />}
+    </motion.article>
+  );
+}
+
+// Ordered deliberately: named case-study clients first (Writers Support
+// Services, then Universal Skill Academy), then remaining website and
+// dashboard feedback, then the inventory case study, closing on a general
+// trust-and-process quote with no case study link.
 const testimonials = [
-  { name: "Aisha Bello", initials: "AB", role: "Business Owner", avatar: "avatar-sunset", quote: "Working with Zorbit made the whole process much easier than I expected. They took time to understand what I actually needed and delivered a professional website that clearly represents my business. Communication was also straightforward throughout the project.", caseStudy: { href: "#website-case-studies", label: "Read website case study" } },
-  { name: "Fatima Ibrahim", initials: "FI", role: "Entrepreneur", avatar: "avatar-violet", quote: "I appreciate the level of professionalism and patience Zorbit brought to my project. They explained the process clearly and made sure the final website was easy for my customers to use. The service felt affordable compared to the value delivered.", caseStudy: { href: "#website-case-studies", label: "Read website case study" } },
-  { name: "Blessing Nwosu", initials: "BN", role: "Small Business Owner", avatar: "avatar-rose", quote: "I had been putting off creating a proper online presence because I thought it would be too expensive and complicated. Zorbit made the process simple and delivered something professional that I am genuinely proud to share with my customers.", caseStudy: { href: "#website-case-studies", label: "Read website case study" } },
-  { name: "Chinedu Okafor", initials: "CO", role: "Operations Manager", avatar: "avatar-teal", quote: "We needed a better way to understand our business data instead of working with scattered spreadsheets. Zorbit helped us turn the information into a dashboard that is easy to understand and actually useful for decision-making. The results were practical, not unnecessarily complicated.", caseStudy: { href: "#dashboard-case-studies", label: "Read dashboard case study" } },
-  { name: "Esther Williams", initials: "EW", role: "Research & Development Professional", avatar: "avatar-gold", quote: "Zorbit's approach to data was refreshing. They didn't just create charts—they helped organise the information in a way that made the findings easier to communicate and understand. The dashboard was clear, professional, and useful for presenting insights to stakeholders.", caseStudy: { href: "#dashboard-case-studies", label: "Read dashboard case study" } },
-  { name: "Ibrahim Musa", initials: "IM", role: "Inventory Manager", avatar: "avatar-lime", quote: "The inventory software developed for us helped bring more structure to how we track our products and records. The team listened to our requirements and made adjustments where necessary. It has made day-to-day management much easier.", caseStudy: { href: "/case-studies/inventory-software", label: "Read inventory case study" } },
+  { name: "Dr. Nwonkolo Nwabunne", initials: "NN", role: "Owner, Writers Support Services · Texas, USA", avatar: "avatar-sunset", quote: "Working with Zorbit made the whole process much easier than I expected. They took time to understand what I actually needed and delivered a professional website that clearly represents my business. Communication was also straightforward throughout the project.", caseStudy: { href: "/case-studies/writers-support-services", label: "Read the case study" } },
+  { name: "Musa Abdulaziz Adaba", initials: "MA", role: "Author & Businessman, Abuja", avatar: "avatar-indigo", quote: "I evaluate a lot of platforms in my work, and what stood out about the Universal Skill Academy website is how clearly it speaks to different people at once — a learner looking for a programme, an institution weighing a partnership, a collaborator sizing up the mission. Zorbit gave the work a home that actually carries it.", caseStudy: { href: "/case-studies/universal-skill-academy", label: "Read the case study" } },
+  { name: "Fatima Ibrahim", initials: "FI", role: "Entrepreneur", avatar: "avatar-violet", quote: "I appreciate the level of professionalism and patience Zorbit brought to my project. They explained the process clearly and made sure the final website was easy for my customers to use. The service felt affordable compared to the value delivered." },
+  { name: "Blessing Nwosu", initials: "BN", role: "Small Business Owner", avatar: "avatar-rose", quote: "I had been putting off creating a proper online presence because I thought it would be too expensive and complicated. Zorbit made the process simple and delivered something professional that I am genuinely proud to share with my customers." },
+  { name: "Chinedu Okafor", initials: "CO", role: "Operations Manager", avatar: "avatar-teal", quote: "We needed a better way to understand our business data instead of working with scattered spreadsheets. Zorbit helped us turn the information into a dashboard that is easy to understand and actually useful for decision-making. The results were practical, not unnecessarily complicated." },
+  { name: "Esther Williams", initials: "EW", role: "Research & Development Professional", avatar: "avatar-gold", quote: "Zorbit's approach to data was refreshing. They didn't just create charts—they helped organise the information in a way that made the findings easier to communicate and understand. The dashboard was clear, professional, and useful for presenting insights to stakeholders." },
+  { name: "Ibrahim Musa", initials: "IM", role: "Store Owner · Phones & Accessories · Kaduna State", avatar: "avatar-lime", quote: "The inventory software developed for us helped bring more structure to how we track our products and records. The team listened to our requirements and made adjustments where necessary. It has made day-to-day management much easier.", caseStudy: { href: "/case-studies/inventory-software", label: "Read inventory case study" } },
   { name: "Tunde Adeyemi", initials: "TA", role: "Business Consultant", avatar: "avatar-sky", quote: "Zorbit helped us develop a digital solution that simplified part of our workflow. What stood out for me was their focus on understanding the problem first instead of immediately jumping into development. The final product was clean and functional." },
 ];
 
@@ -111,7 +258,6 @@ export default function Home() {
   const [inquiryStatus, setInquiryStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const statsRef = useRef<HTMLDivElement>(null);
   const testimonialTrackRef = useRef<HTMLDivElement>(null);
-  const submitInquiry = trpc.leads.submit.useMutation();
   useEffect(() => {
     const loaderTimer = window.setTimeout(() => setIsLoading(false), 1350);
     return () => window.clearTimeout(loaderTimer);
@@ -143,15 +289,21 @@ export default function Home() {
     };
     setInquiryStatus("sending");
     try {
-      // Primary path: save the lead and notify the team by email — this
-      // works even if the visitor's device has no email app configured.
-      await submitInquiry.mutateAsync(payload);
+      // Primary path: send it to the Vercel serverless function, which
+      // emails both the team and the visitor via Resend. No database, no
+      // separate backend — this route ships in the same Vercel deploy.
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error(`Request failed: ${response.status}`);
       setInquiryStatus("sent");
       form.reset();
     } catch (error) {
       console.error("[Inquiry] Failed to submit, falling back to mailto:", error);
       // Fallback: open the visitor's email app so the inquiry is never lost
-      // even if the backend/database isn't reachable.
+      // even if the /api route is unreachable.
       const detail = [
         `Name: ${payload.name}`,
         `Business: ${payload.business || "Not specified"}`,
@@ -162,7 +314,7 @@ export default function Home() {
         "Project details:",
         payload.details,
       ].join("\n");
-      window.location.href = `mailto:hello@zorbittechnology.com?subject=${encodeURIComponent("New Zorbit project inquiry")}&body=${encodeURIComponent(detail)}`;
+      window.location.href = `mailto:hello@zorbittechnology.com.ng?subject=${encodeURIComponent("New Zorbit project inquiry")}&body=${encodeURIComponent(detail)}`;
       setInquiryStatus("failed");
     }
   };
@@ -212,7 +364,7 @@ export default function Home() {
       <div className="loader-copy"><b>ZORBIT</b><span>TECHNOLOGY / INITIALIZING</span></div>
       <div className="loader-bar"><span /></div>
     </div>
-    <header className="site-header"><a className="brand" href="#home" onClick={closeMenu}><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><button className="menu-button" aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><nav className={menuOpen ? "nav open" : "nav"}><a href="#home" onClick={closeMenu}>Home</a><a href="#services" onClick={closeMenu}>Services</a><a href="#work" onClick={closeMenu}>Portfolio</a><a href="/about" onClick={closeMenu}>About</a><a href="#contact" className="nav-cta" onClick={closeMenu}>Contact <ArrowUpRight size={15} /></a></nav></header>
+    <header className="site-header"><a className="brand" href="#home" onClick={closeMenu}><img className="brand-mark" src="/images/logo-mark.png" alt="Zorbit Technology logo" /><span><b>ZORBIT</b><small>TECHNOLOGY</small></span></a><button className="menu-button" aria-label="Toggle menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button><nav className={menuOpen ? "nav open" : "nav"}><a href="#home" onClick={closeMenu}>Home</a><a href="#services" onClick={closeMenu}>Services</a><a href="#work" onClick={closeMenu}>Portfolio</a><a href="/about" onClick={closeMenu}>About</a><a href="/founder" className="nav-cta" onClick={closeMenu}>Meet the founder <ArrowUpRight size={15} /></a><a href="#contact" className="nav-cta" onClick={closeMenu}>Contact <ArrowUpRight size={15} /></a></nav></header>
 
     <main>
       <section id="home" className="hero section-shell"><NodeField /><div className="hero-copy"><div className="eyebrow"><span className="eyebrow-dot" /> Nationwide · Accessible technology · Est. 2024</div><h1>Turning data into <em>decisions.</em><br />Building products<br />that work.</h1><p className="hero-lede">Data analysis, visualization, websites, apps, and software for SMEs and businesses that need practical solutions at an affordable price.</p><div className="hero-actions"><a href="#contact" className="button button-primary">Work with us <ArrowUpRight size={17} /></a><a href="#work" className="button button-ghost">View our work <ChevronRight size={17} /></a></div></div><div className="hero-side"><span>01 / INTRODUCTION</span><p>Useful technology should be within reach.</p></div><div className="scroll-cue"><span /> Scroll to explore</div></section>
@@ -223,11 +375,11 @@ export default function Home() {
 
       <section id="services" className="content-section section-shell"><div className="section-heading"><div><span className="section-index">02 / CAPABILITY</span><h2>Technology with<br /><span>an operating point.</span></h2></div><p>From a clear dashboard to a credible website or business tool, we make useful digital services accessible to SMEs, businesses, and individuals nationwide.</p></div><div className="services-grid">{services.map(({ index, icon: Icon, title, text }) => <article className="service-card" key={title}><div className="card-top"><span>{index}</span><Icon size={25} strokeWidth={1.5} /></div><h3>{title}</h3><p>{text}</p><a href="#contact" aria-label={`Learn more about ${title}`}><ArrowUpRight size={18} /></a></article>)}</div></section>
 
-      <section id="dashboard-case-studies" className="dashboard-showcase section-shell" aria-labelledby="dashboard-showcase-title"><div className="dashboard-heading"><div><span className="section-index">03 / DATA EVIDENCE</span><h2 id="dashboard-showcase-title">Dashboards that<br /><span>make the signal useful.</span></h2></div><p>Selected Power BI work showing how dense information can become an operating view for teams, institutions, and businesses.</p></div><div className="dashboard-grid">{dashboardShowcase.map((dashboard) => <article className="dashboard-card" key={dashboard.title}><a className="dashboard-image" href={dashboard.href} target="_blank" rel="noreferrer" aria-label={`Open ${dashboard.title} in Power BI`}><img src={dashboard.image} alt={`${dashboard.title} preview`} loading="lazy" /><span>OPEN DASHBOARD <ArrowUpRight size={15} /></span><div className="dashboard-tools" aria-label={`Tools used: ${dashboard.tools.join(", ")}`}><small>TOOLS USED</small><div>{dashboard.tools.map((tool) => <b key={tool}>{tool}</b>)}</div></div></a><div className="dashboard-copy"><span>{dashboard.number} / POWER BI</span><h3>{dashboard.title}</h3><p>{dashboard.caption}</p><a href={dashboard.href} target="_blank" rel="noreferrer">View dashboard <ArrowUpRight size={14} /></a></div></article>)}</div></section>
+      <section id="dashboard-case-studies" className="dashboard-showcase section-shell" aria-labelledby="dashboard-showcase-title"><div className="dashboard-heading"><div><span className="section-index">03 / DATA EVIDENCE</span><h2 id="dashboard-showcase-title">Dashboards that<br /><span>make the signal useful.</span></h2></div><p>Selected Power BI work showing how dense information can become an operating view for teams, institutions, and businesses.</p></div><div className="dashboard-grid">{dashboardShowcase.map((dashboard, i) => <DashboardCard dashboard={dashboard} index={i} key={dashboard.title} />)}</div></section>
 
       <section id="about" className="about-section section-shell"><div className="about-statement"><span className="section-index">04 / ABOUT ZORBIT</span><h2>Useful technology<br /><span>starts with access.</span></h2><div className="about-profile"><div className="profile-role">COMPANY / OPERATING PRINCIPLE</div><h3>Clarity is<br />the product.</h3><p className="profile-specialism">Data · Digital products · Useful systems</p></div><p>Zorbit is a technology company built to make data and digital tools more accessible to SMEs, businesses, and individuals across all states. We combine data, design, and delivery to help clients move from scattered inputs to practical next steps—without pricing useful technology out of reach.</p><p>Our mission is to offer clear, reliable services at fair and affordable prices. Our work begins with the operating point: the decision to improve, the process to simplify, the audience to reach, or the opportunity to make usable. From there, we build with evidence, clarity, and a focus on what will keep working after launch.</p><div className="about-signals"><span>AFFORDABLE ACCESS</span><span>SMES &amp; BUSINESSES</span><span>NATIONWIDE DELIVERY</span></div><div className="about-links"><a className="text-link" href="/about">About Zorbit <ArrowUpRight size={16} /></a><a className="text-link text-link-muted" href="/founder">Meet the founder <ArrowUpRight size={16} /></a></div></div><div className="credential-card"><div className="credential-head"><ShieldCheck size={20} /><span>COMPANY / PROFILE</span></div><div className="credential-big">Built for<br /><strong>access.</strong></div><dl><div><dt>Status</dt><dd>CAC Registered Business</dd></div><div><dt>Founded</dt><dd>2024</dd></div><div><dt>Focus</dt><dd>Data · Digital · Intelligence</dd></div><div><dt>Reach</dt><dd>All States + Remote</dd></div></dl><div className="credential-seal"><Check size={15} /> VERIFIED OPERATOR</div></div></section>
 
-      <section id="work" className="content-section portfolio-section section-shell"><div className="section-heading"><div><span className="section-index">05 / SELECTED WORK</span><h2>Evidence over<br /><span>empty promises.</span></h2></div><p>Every project is framed as proof of a clearer decision, cleaner operation, or more usable system—across academic services, company websites, business software, and digital commerce.</p></div><div className="portfolio-feature"><div id="website-case-studies" className="portfolio-art">{featuredWebsites.map((website) => <a className="portfolio-website" href={website.href} target="_blank" rel="noreferrer" key={website.label} aria-label={`Visit ${website.title}`}><img src={website.image} alt={website.title} loading="lazy" /><span className="art-label">{website.label} <ArrowUpRight size={13} /></span></a>)}</div><div className="project-list">{projects.map((project) => <article id={project.title === "Inventory & Debt Tracking Software" ? "inventory-case-study" : undefined} className="project" key={project.title}><span className="project-number">{project.number}</span><div><h3>{project.title}</h3><p>{project.text}</p><div className="tags">{project.tools.map(tool => <span key={tool}>{tool}</span>)}</div>{project.images && <div className="project-proof-gallery" aria-label="Inventory software screenshots">{project.images.map((image) => <a href={image.src} target="_blank" rel="noreferrer" key={image.src}><img src={image.src} alt={image.alt} loading="lazy" /></a>)}</div>}<div className="project-links">{project.href && (project.href.startsWith("/") ? <a className="project-link" href={project.href}>{project.linkLabel} <ArrowUpRight size={14} /></a> : <a className="project-link" href={project.href} target="_blank" rel="noreferrer">{project.linkLabel} <ArrowUpRight size={14} /></a>)}{project.caseStudyHref && <a className="project-link" href={project.caseStudyHref}>Read the case study <ArrowUpRight size={14} /></a>}</div></div>{project.href ? (project.href.startsWith("/") ? <a href={project.href} className="project-arrow" aria-label={`Read the ${project.title} case study`}><ArrowUpRight size={20} /></a> : <a href={project.href} className="project-arrow" target="_blank" rel="noreferrer" aria-label={`Visit ${project.title}`}><ArrowUpRight size={20} /></a>) : <ArrowUpRight className="project-arrow" size={20} />}</article>)}</div></div></section>
+      <section id="work" className="content-section portfolio-section section-shell"><div className="section-heading"><div><span className="section-index">05 / SELECTED WORK</span><h2>Evidence over<br /><span>empty promises.</span></h2></div><p>Every project is framed as proof of a clearer decision, cleaner operation, or more usable system—across academic services, company websites, business software, and digital commerce.</p></div><div className="portfolio-feature"><div id="website-case-studies" className="portfolio-art">{featuredWebsites.map((website, i) => <PortfolioWebsiteThumb website={website} index={i} key={website.label} />)}</div><div className="project-list">{projects.map((project, i) => <ProjectCard project={project} index={i} key={project.title} />)}</div></div></section>
 
       <section className="cert-section section-shell"><div><span className="section-index">06 / CREDENTIALS</span><h2>Always<br /><span>keep learning.</span></h2></div><div className="cert-list">{certifications.map((cert) => <div className="cert" key={cert}><Sparkles size={16} /><span>{cert}</span><Check size={16} /></div>)}</div></section>
 
