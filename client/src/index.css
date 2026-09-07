@@ -168,6 +168,7 @@ h1,h2,h3,p { margin:0; } h1 { max-width:780px; font-size:clamp(54px,7.2vw,108px)
 .admin-login-screen { display:grid; place-items:center; }
 .admin-login-card { width:100%; max-width:340px; padding:28px; background:var(--surface); border:1px solid var(--line); border-top:2px solid var(--orange); }
 .admin-login-card h1 { font-size:22px; letter-spacing:-.03em; }
+.inquiry-whatsapp-link { color:#25D366; font-weight:700; text-decoration:underline; text-underline-offset:3px; }
 .admin-login-card p { margin-top:8px; color:var(--muted); font-size:13px; line-height:1.5; }
 .admin-login-card input { width:100%; margin-top:18px; padding:11px 12px; background:#111; border:1px solid var(--line); color:var(--warm); font:14px 'Space Grotesk',sans-serif; }
 .admin-login-card input:focus { outline:0; border-color:var(--orange); }

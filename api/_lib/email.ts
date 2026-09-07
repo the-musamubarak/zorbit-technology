@@ -129,11 +129,11 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
       <tr><td>
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#000000;color:#FAF7F4;">
           <tr><td style="padding:24px 0;">
-            <p style="margin:0 0 12px;color:#B8B0A9;">Hi ${escapedFirstName},</p>
-            <p style="margin:0 0 12px;color:#B8B0A9;">Thanks for reaching out to <strong>Zorbit Technology</strong>. This confirms we've received your message and will get back to you within 24 hours.</p>
-            <p style="margin:0 0 12px;color:#B8B0A9;">If it's urgent, you can also reach us on WhatsApp: <a href="https://wa.me/message/46GKY26SZUWDL1" style="color:#E8571A;font-weight:700;">WhatsApp</a></p>
-            <h2 style="margin:0;color:#E8571A;font-size:18px;line-height:125%;">Zorbit Technology<br />zorbittechnology.com.ng</h2>
-            <img alt="Zorbit Technology logo" height="65" width="65" src="https://resend-attachments.s3.amazonaws.com/469d08b3-5513-475d-867a-8265aa261834" style="display:block;margin-top:16px;border:0;border-radius:8px;" />
+            <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">Hi ${escapedFirstName},</p>
+            <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">Thanks for reaching out to <em><strong>Zorbit Technology</strong></em>, this confirms we've received your message and will get back to you within 24 hours.</p>
+            <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">If it's urgent, you can also reach us on <strong>WhatsApp: </strong><a href="https://wa.me/message/46GKY26SZUWDL1" style="color:#25D366;text-decoration:underline;font-weight:700;"><strong>https://wa.me/message/46GKY26SZUWDL1</strong></a></p>
+            <h2 style="margin:0;padding:0;font-size:1.8em;line-height:1.44em;padding-top:0.389em;font-weight:600;"><span style="color:#E8571A;"><strong>Zorbit Technology</strong></span><br /><strong>zorbittechnology.com.ng</strong></h2>
+            <img alt="A stylized orange letter Z with a yellow diagonal line is enclosed in a circle against a black background." height="65" src="https://resend-attachments.s3.amazonaws.com/469d08b3-5513-475d-867a-8265aa261834" style="display:block;outline:none;border:none;text-decoration:none;border-radius:8px;" width="65" />
           </td></tr>
         </table>
       </td></tr>

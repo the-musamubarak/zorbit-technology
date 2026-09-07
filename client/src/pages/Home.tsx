@@ -266,6 +266,12 @@ export default function Home() {
     setShowPrivacyNotice(window.localStorage.getItem("zorbit-privacy-notice") !== "acknowledged");
   }, []);
   useEffect(() => {
+    const confirmation = document.querySelector<HTMLParagraphElement>(".inquiry-submit p");
+    if (confirmation) {
+      confirmation.innerHTML = `We'll receive your brief directly and follow up by email. You can also contact us directly on <a class="inquiry-whatsapp-link" href="https://wa.me/message/46GKY26SZUWDL1" target="_blank" rel="noreferrer">WhatsApp</a>.`;
+    }
+  }, []);
+  useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setStatsActive(true); }, { threshold: 0.35 });
     if (statsRef.current) observer.observe(statsRef.current);
     return () => observer.disconnect();
