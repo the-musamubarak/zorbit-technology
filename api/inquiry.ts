@@ -1,7 +1,4 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { z } from "zod";
-import { sendLeadAutoReplyEmail, sendLeadNotificationEmail } from "./_lib/email";
-
 /**
  * POST /api/inquiry
  *
@@ -12,14 +9,15 @@ import { sendLeadAutoReplyEmail, sendLeadNotificationEmail } from "./_lib/email"
  * returns success/failure.
  */
 
-const inquiryInput = z.object({
-  name: z.string().trim().min(1).max(190),
-  business: z.string().trim().max(190).optional(),
-  email: z.string().trim().email().max(320),
-  phone: z.string().trim().max(40).optional(),
-  service: z.string().trim().min(1).max(120),
-  details: z.string().trim().min(1),
-});
+function readString(value: unknown, maxLength: number, required = false): string | undefined {
+  if (typeof value !== "string") return required ? undefined : "";
+  const trimmed = value.trim();
+  return trimmed && trimmed.length <= maxLength ? trimmed : undefined;
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && value.length <= 320;
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
@@ -27,24 +25,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const parsed = inquiryInput.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: "Invalid submission", details: parsed.error.flatten() });
+  const body = req.body && typeof req.body === "object" ? req.body as Record<string, unknown> : {};
+  const name = readString(body.name, 190, true);
+  const business = readString(body.business, 190);
+  const email = readString(body.email, 320, true);
+  const phone = readString(body.phone, 40);
+  const service = readString(body.service, 120, true);
+  const details = readString(body.details, 10000, true);
+  if (!name || !email || !isValidEmail(email) || !service || !details) {
+    return res.status(400).json({ error: "Invalid submission" });
   }
 
   const input = {
-    name: parsed.data.name,
-    business: parsed.data.business || null,
-    email: parsed.data.email,
-    phone: parsed.data.phone || null,
-    service: parsed.data.service,
-    details: parsed.data.details,
+    name,
+    business: business || null,
+    email,
+    phone: phone || null,
+    service,
+    details,
   };
 
   try {
     // Both emails are best-effort — see email.ts: a missing RESEND_API_KEY
     // just logs a warning rather than throwing, so this still returns
     // success as long as the request itself was valid.
+    const { sendLeadAutoReplyEmail, sendLeadNotificationEmail } = await import("./_lib/email");
     await Promise.all([sendLeadNotificationEmail(input), sendLeadAutoReplyEmail(input)]);
     return res.status(200).json({ success: true });
   } catch (error) {
