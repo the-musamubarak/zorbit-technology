@@ -134,7 +134,7 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
             <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">Your enquiry has been received successfully. Our team will review your message and get back to you within <strong>24 hours</strong>.</p>
             <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">If your request is urgent, you can also reach us directly on <a href="https://wa.me/message/46GKY26SZUWDL1" style="color:rgb(37, 211, 102);text-decoration:underline;font-weight:700;"><strong><u>WhatsApp</u></strong></a> for a faster response.</p>
             <p style="margin:0;padding:0;font-size:1em;padding-top:0.5em;padding-bottom:0.5em;">We appreciate your interest in Zorbit Technology and look forward to helping you.</p>
-            <h2 style="margin:0;padding:0;font-size:1.8em;line-height:1.44em;padding-top:0.389em;font-weight:600;"><span style="color:#E8571A;"><strong>Zorbit Technology</strong></span><br /><span style="color:#e8571a">Technology. Data. Digital Solutions.</span></h2>
+            <h2 style="margin:0;padding:0;font-size:15px;line-height:1.44em;padding-top:0.389em;font-weight:600;"><span style="color:#E8571A;"><strong>Zorbit Technology</strong></span><br /><span style="color:#e8571a">Technology. Data. Digital Solutions.</span></h2>
             <img alt="A stylized orange letter Z with a yellow diagonal line is enclosed in a circle against a black background." height="65" src="https://resend-attachments.s3.amazonaws.com/469d08b3-5513-475d-867a-8265aa261834" style="display:block;outline:none;border:none;text-decoration:none;border-radius:8px;" width="65" />
           </td></tr>
         </table>
