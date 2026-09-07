@@ -49,7 +49,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Both emails are best-effort — see email.ts: a missing RESEND_API_KEY
     // just logs a warning rather than throwing, so this still returns
     // success as long as the request itself was valid.
-    const { sendLeadAutoReplyEmail, sendLeadNotificationEmail } = await import("./_lib/email");
+    const { sendLeadAutoReplyEmail, sendLeadNotificationEmail } = await import("./_lib/email.js");
     await Promise.all([sendLeadNotificationEmail(input), sendLeadAutoReplyEmail(input)]);
     return res.status(200).json({ success: true });
   } catch (error) {
