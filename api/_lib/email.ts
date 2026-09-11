@@ -3,7 +3,7 @@
  *   RESEND_API_KEY, LEAD_NOTIFICATION_EMAIL, EMAIL_FROM
  *
  * If RESEND_API_KEY isn't configured, both functions silently no-op (with
- * a console warning) rather than throwing — a missing mail setup should
+ * a console warning) rather than throwing a missing mail setup should
  * never crash the inquiry endpoint.
  */
 
@@ -28,7 +28,7 @@ type ResendEmail = {
 async function sendResendEmail(email: ResendEmail): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.warn("[Email] RESEND_API_KEY not set — emails will be skipped. Set it in your Vercel project's environment variables.");
+    console.warn("[Email] RESEND_API_KEY not set emails will be skipped. Set it in your Vercel project's environment variables.");
     return;
   }
 
@@ -58,7 +58,7 @@ export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Pr
   const to = process.env.LEAD_NOTIFICATION_EMAIL;
   const from = process.env.EMAIL_FROM;
   if (!to || !from) {
-    console.warn("[Email] LEAD_NOTIFICATION_EMAIL / EMAIL_FROM missing — skipping team notification.");
+    console.warn("[Email] LEAD_NOTIFICATION_EMAIL / EMAIL_FROM missing skipping team notification.");
     return;
   }
 
@@ -78,7 +78,7 @@ export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Pr
       to,
       from,
       replyTo: lead.email,
-      subject: `New Zorbit project inquiry — ${lead.name}`,
+      subject: `New Zorbit project inquiry ${lead.name}`,
       text: lines,
     });
   } catch (error) {
@@ -90,7 +90,7 @@ export async function sendLeadNotificationEmail(lead: LeadNotificationInput): Pr
 export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promise<void> {
   const from = process.env.EMAIL_FROM;
   if (!from) {
-    console.warn("[Email] EMAIL_FROM missing — skipping visitor auto-reply.");
+    console.warn("[Email] EMAIL_FROM missing skipping visitor auto-reply.");
     return;
   }
 
@@ -105,7 +105,7 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
   const text = [
     `Hi ${firstName},`,
     "",
-    "Thanks for reaching out to Zorbit Technology — we've received your project brief and will get back to you within 24 hours.",
+    "Thanks for reaching out to Zorbit Technology we've received your project brief and will get back to you within 24 hours.",
     "",
     "Here's a copy of what you sent us:",
     `Service needed: ${lead.service}`,
@@ -113,14 +113,14 @@ export async function sendLeadAutoReplyEmail(lead: LeadNotificationInput): Promi
     "",
     "If anything changes in the meantime or you'd like to add more detail, just reply directly to this email.",
     "",
-    "— Zorbit Technology",
+    "Zorbit Technology",
   ].join("\n");
 
   try {
     await sendResendEmail({
       to: lead.email,
       from,
-      subject: "We've received your project inquiry — Zorbit Technology",
+      subject: "We've received your project inquiry Zorbit Technology",
       text,
       html: `<!DOCTYPE html>
 <html lang="en">

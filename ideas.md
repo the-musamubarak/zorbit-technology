@@ -1,4 +1,4 @@
-# Zorbit Technology — Design Direction
+# Zorbit Technology Design Direction
 
 ## Three stylistic approaches
 
@@ -57,7 +57,7 @@ Example lines: “Make the next decision with better evidence.” “Bring us th
 The logo is a geometric Z built from two offset orange bars inside a circular field, suggesting a path from raw input to clear output. The wordmark uses a custom-spaced uppercase treatment of `ZORBIT` with `TECHNOLOGY` as a smaller mono baseline.
 
 ### Signature Brand Color
-Burnt Orange `#E8571A` — the signal that marks movement, action, and proof.
+Burnt Orange `#E8571A` the signal that marks movement, action, and proof.
 
 ## Implementation reminders
 

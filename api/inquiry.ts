@@ -3,7 +3,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
  * POST /api/inquiry
  *
  * Handles the homepage project-inquiry form. Deployed automatically by
- * Vercel as a serverless function — no separate backend hosting needed.
+ * Vercel as a serverless function no separate backend hosting needed.
  * Deliberately stateless: nothing is saved to a database, it just sends
  * two emails via Resend (team notification + visitor auto-reply) and
  * returns success/failure.
@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   };
 
   try {
-    // Both emails are best-effort — see email.ts: a missing RESEND_API_KEY
+    // Both emails are best-effort see email.ts: a missing RESEND_API_KEY
     // just logs a warning rather than throwing, so this still returns
     // success as long as the request itself was valid.
     const { sendLeadAutoReplyEmail, sendLeadNotificationEmail } = await import("./_lib/email.js");

@@ -1,6 +1,6 @@
 # Skyewise Foundation 2026 Empowerment Grant Application
 
-> **Draft — review all factual details, contact links, and the final funding allocation before submitting.** This is grant-writing assistance, not financial or award advice.
+> **Draft review all factual details, contact links, and the final funding allocation before submitting.** This is grant-writing assistance, not financial or award advice.
 
 | Form field | Recommended response |
 | --- | --- |
